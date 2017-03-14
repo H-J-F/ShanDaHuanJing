@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    tools:context="com.example.a11691.shandahuanjing.SetupActivity"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        app:srcCompat="@drawable/xiaohui"
+        android:id="@+id/xiaohui"
+        android:layout_weight="0.05"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="false"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="40dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        app:srcCompat="@drawable/stu"
+        android:id="@+id/stu"
+        android:scaleType="centerInside"
+        android:paddingRight="60dp"
+        android:paddingLeft="60dp"
+        android:layout_marginTop="35dp" />
+
+    <TextView
+        android:text="汕大环境宝，您手中的汕大"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setup_text"
+        android:layout_weight="0.23"
+        tools:text="汕大环境宝，您手中的汕大"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:layout_marginTop="40dp"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center" />
+</LinearLayout>

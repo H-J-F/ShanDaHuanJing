@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">汕大环境宝</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="img_jiaquan">甲醛</string>
+    <string name="img_pm25">PM2.5</string>
+    <string name="img_shidu">湿度</string>
+    <string name="img_CO">Co</string>
+    <string name="img_SO2">So2</string>
+    <string name="img_NO2">No2</string>
+</resources>

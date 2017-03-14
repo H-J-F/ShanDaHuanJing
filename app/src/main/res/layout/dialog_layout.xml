@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:background="#fff"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:gravity="bottom|center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:background="#dcdcdc"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/dialog_CD"
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:text="CD座"
+            android:background="@drawable/dia_textview_bg_selector"
+            android:textColor="@drawable/dialog_textview_selector"
+            android:textSize="20sp" />
+
+        <View
+            android:background="#dcdcdc"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/dialog_EF"
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:text="EF座"
+            android:background="@drawable/dia_textview_bg_selector"
+            android:textColor="@drawable/dialog_textview_selector"
+            android:textSize="20sp" />
+
+        <View
+            android:background="#dcdcdc"
+            android:layout_height="1dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/dialog_zhicheng"
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:text="至诚"
+            android:background="@drawable/dia_textview_bg_selector"
+            android:textColor="@drawable/dialog_textview_selector"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
