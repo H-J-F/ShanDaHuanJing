@@ -40,7 +40,9 @@
     </style>
 
     <style name="MyTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
+    <style name="MyButtonTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+    </style>
     <style name="MyTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

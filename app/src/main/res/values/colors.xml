@@ -2,17 +2,24 @@
 <resources>
     <color name="colorPrimary">#ff6f00</color>
     <color name="colorPrimaryDark">#ff6f00</color>
-    <color name="black">#121212</color>
     <color name="colorAccent">#ff6f00</color>
+
     <color name="dialog_pressed_color">#cfcfcf</color>
     <color name="transparent">#00ffffff</color>
-    <color name="white">#ffffff</color>
     <color name="text_color">#f77d37</color>
     <color name="dialog_text_color">#7c7c7c</color>
+    <color name="loginEditText_bgcolor">#53212121</color>
+
     <color name="jiaquan">#f9e560</color>
     <color name="pm25">#acadad</color>
     <color name="shidu">#03cafc</color>
     <color name="co">#02c5e8</color>
     <color name="so2">#fdde11</color>
     <color name="no2">#666666</color>
+
+    <color name="black">#121212</color>
+    <color name="white">#ffffff</color>
+    <color name="blue">#26d0ff</color>
+    <color name="green">#00d424</color>
+    <color name="purple">#e063ff</color>
 </resources>

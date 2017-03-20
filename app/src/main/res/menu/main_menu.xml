@@ -4,12 +4,7 @@
     <item
         android:title="Follow"
         android:id="@+id/follow"
-        android:icon="@android:drawable/btn_star_big_off"
-        app:showAsAction="always" />
-    <item
-        android:title="UnFollow"
-        android:id="@+id/unfollow"
-        android:icon="@android:drawable/btn_star_big_on"
+        android:icon="@drawable/ic_unfollow"
         app:showAsAction="always" />
     <item
         android:title="Setting"

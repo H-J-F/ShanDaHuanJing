@@ -5,11 +5,11 @@
             <menu>
                 <item
                     android:id="@+id/nav_message"
-                    android:icon="@drawable/nav_friends"
+                    android:icon="@drawable/ic_person"
                     android:title="个人信息"/>
                 <item
                     android:id="@+id/nav_location"
-                    android:icon="@drawable/nav_location"
+                    android:icon="@drawable/ic_location"
                     android:title="关注地址" />
             </menu>
         </item>
@@ -21,7 +21,7 @@
                     android:title="更改设置"/>
                 <item
                     android:id="@+id/nav_logout"
-                    android:icon="@drawable/ic_backup"
+                    android:icon="@drawable/ic_logout"
                     android:title="注销账号"/>
             </menu>
         </item>

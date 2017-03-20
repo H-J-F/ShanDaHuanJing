@@ -1,64 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:background="#fff"
-    android:layout_height="wrap_content"
+    android:layout_height="250dp"
     android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:gravity="bottom|center_horizontal"
-        android:layout_height="wrap_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:layout_height="250dp" >
 
-        <View
-            android:background="#dcdcdc"
-            android:layout_height="1dp"
-            android:layout_width="match_parent" />
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/dialog_CD"
-            android:layout_height="50dp"
+        <LinearLayout
+            android:gravity="bottom|center_horizontal"
+            android:layout_height="250dp"
             android:layout_width="match_parent"
-            android:clickable="true"
-            android:text="CD座"
-            android:background="@drawable/dia_textview_bg_selector"
-            android:textColor="@drawable/dialog_textview_selector"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <View
-            android:background="#dcdcdc"
-            android:layout_height="1dp"
-            android:layout_width="match_parent" />
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
 
-        <TextView
-            android:gravity="center"
-            android:id="@+id/dialog_EF"
-            android:layout_height="50dp"
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:text="EF座"
-            android:background="@drawable/dia_textview_bg_selector"
-            android:textColor="@drawable/dialog_textview_selector"
-            android:textSize="20sp" />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_CD"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="CD座"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
 
-        <View
-            android:background="#dcdcdc"
-            android:layout_height="1dp"
-            android:layout_width="match_parent" />
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
 
-        <TextView
-            android:gravity="center"
-            android:id="@+id/dialog_zhicheng"
-            android:layout_height="50dp"
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:text="至诚"
-            android:background="@drawable/dia_textview_bg_selector"
-            android:textColor="@drawable/dialog_textview_selector"
-            android:textSize="20sp" />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_EF"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="EF座"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
 
-    </LinearLayout>
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_zhicheng"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="至诚"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_G"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="G座"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_23fan"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="二三饭"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_4fan"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="四饭"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_hongyi"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="弘毅"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_zhixing"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="知行"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+            <View
+                android:background="#dcdcdc"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/dialog_siyuan"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:text="思源"
+                android:background="@drawable/dia_textview_bg_selector"
+                android:textColor="@drawable/dialog_textview_selector"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

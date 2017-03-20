@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="160dp"
     android:padding="10dp"
-    android:background="@drawable/green">
+    android:background="@drawable/orange">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/personal_image"
@@ -12,7 +12,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="18dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/nav_icon"
+        android:src="@drawable/ic_default_pic"
         android:layout_alignParentLeft="true" />
 
     <TextView
