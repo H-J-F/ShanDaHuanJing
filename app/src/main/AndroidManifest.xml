@@ -24,10 +24,10 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MyTheme"></activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name=".Map"
-            android:theme="@style/MyTheme"></activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name=".SetupActivity"
             android:theme="@style/SetupTheme">
@@ -40,15 +40,17 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote" />
 
-        <activity android:name=".DataShow"></activity>
+        <activity android:name=".DataShow" />
+        <activity
+            android:name=".PersonalActivity"
+            android:theme="@style/MyTheme"/>
     </application>
 
 </manifest>

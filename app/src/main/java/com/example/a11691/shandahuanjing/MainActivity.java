@@ -10,19 +10,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup.LayoutParams;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     String co = new String();
     String so2 = new String();
     String no2 = new String();
+    private CardView card_jiaquan;
+    private CardView card_pm25;
+    private CardView card_shidu;
+    private CardView card_co;
+    private CardView card_so2;
+    private CardView card_no2;
     private SwipeRefreshLayout swipeRefresh;
     private DrawerLayout main_drawerlayout;
     private View view1, view2, view3, view4, view5, view6, view7, view8, view9, view_container;
@@ -56,7 +63,16 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         setSupportActionBar(main_toolbar);
         main_drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        View headerlayout = navView.inflateHeaderView(R.layout.nav_header);
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View layout = layoutInflater.inflate(R.layout.viewpager_layout, (ViewGroup) findViewById(R.id.viewpager_layout));
+        card_jiaquan = (CardView) layout.findViewById(R.id.card_jiaquan);
+        card_pm25 = (CardView) layout.findViewById(R.id.card_pm25);
+        card_shidu = (CardView) layout.findViewById(R.id.card_shidu);
+        card_co = (CardView) layout.findViewById(R.id.card_co);
+        card_so2 = (CardView) layout.findViewById(R.id.card_so2);
+        card_no2 = (CardView) layout.findViewById(R.id.card_no2);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -107,10 +123,110 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOnPageChangeListener(this);
 
+        card_jiaquan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView jiaquan_tv = (TextView) view_container.findViewById(R.id.jiaquan_data);
+
+                Intent jiaquan_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "甲醛");
+                bundle.putString("value", jiaquan_tv.getText().toString());
+                jiaquan_intent.putExtras(bundle);
+                jiaquan_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(jiaquan_intent);
+            }
+        });
+
+        card_pm25.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView pm25_tv = (TextView) view_container.findViewById(R.id.pm25_data);
+
+                Intent pm25_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "PM2.5");
+                bundle.putString("value", pm25_tv.getText().toString());
+                pm25_intent.putExtras(bundle);
+                pm25_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(pm25_intent);
+            }
+        });
+
+        card_shidu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView shidu_tv = (TextView) view_container.findViewById(R.id.shidu_data);
+
+                Intent shidu_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "湿度");
+                bundle.putString("value", shidu_tv.getText().toString());
+                shidu_intent.putExtras(bundle);
+                shidu_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(shidu_intent);
+            }
+        });
+
+        card_co.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView co_tv = (TextView) view_container.findViewById(R.id.co_data);
+
+                Intent co_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "CO");
+                bundle.putString("value", co_tv.getText().toString());
+                co_intent.putExtras(bundle);
+                co_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(co_intent);
+            }
+        });
+
+        card_so2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView so2_tv = (TextView) view_container.findViewById(R.id.so2_data);
+
+                Intent so2_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "CO");
+                bundle.putString("value", so2_tv.getText().toString());
+                so2_intent.putExtras(bundle);
+                so2_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(so2_intent);
+            }
+        });
+
+        card_no2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_container = viewList.get(viewPager.getCurrentItem());
+                TextView no2_tv = (TextView) view_container.findViewById(R.id.no2_data);
+
+                Intent no2_intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "CO");
+                bundle.putString("value", no2_tv.getText().toString());
+                no2_intent.putExtras(bundle);
+                no2_intent.setClass(MainActivity.this, DataShow.class);
+                startActivity(no2_intent);
+            }
+        });
+
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                main_drawerlayout.closeDrawers();
+                switch (item.getItemId()) {
+                    case R.id.nav_message:
+                        Intent per_intent = new Intent(MainActivity.this, PersonalActivity.class);
+                        startActivity(per_intent);
+                }
                 return true;
             }
         });
@@ -282,6 +398,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         viewPager.setTag(viewPager.getCurrentItem());
         Button dialog_btn = (Button) findViewById(R.id.address_btn);
         dialog_btn.setText(dialog_items[arg0]);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        main_drawerlayout.closeDrawers();
     }
 
     @Override

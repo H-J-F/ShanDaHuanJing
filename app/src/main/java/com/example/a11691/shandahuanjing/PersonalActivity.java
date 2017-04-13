@@ -1,41 +1,63 @@
 package com.example.a11691.shandahuanjing;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class LoginActivity extends AppCompatActivity {
+public class PersonalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setNoTitle();
-        setContentView(R.layout.login_layout);
-        Button login_btn = (Button) findViewById(R.id.login_btn);
-        login_btn.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_personal);
+
+        final EditText username = (EditText) findViewById(R.id.user_name);
+        final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_personal);
+        final ImageView edit_name = (ImageView) findViewById(R.id.edit_name);
+        final CircleImageView personal_img = (CircleImageView) findViewById(R.id.personal_image);
+
+        linearLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(loginIntent);
-                finish();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                linearLayout.requestFocus();
+                return false;
             }
         });
 
-        CircleImageView circleImageView = (CircleImageView) findViewById(R.id.head_pic);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
+        edit_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                username.setEnabled(true);
+                username.requestFocus();
+            }
+        });
+
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(!hasFocus){
+                    username.setEnabled(false);
+                }
+            }
+        });
+
+        personal_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 show_dialog();
@@ -45,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void show_dialog() {
         final Dialog dialog = new Dialog(this, R.style.dialog);
-        View dialog_view = LayoutInflater.from(LoginActivity.this).inflate(R.layout.head_dialog_loyout, null);
+        View dialog_view = LayoutInflater.from(PersonalActivity.this).inflate(R.layout.head_dialog_loyout, null);
         dialog.setContentView(dialog_view);
 
         Button take_pic = (Button) dialog_view.findViewById(R.id.take_photo);
@@ -56,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(LoginActivity.this, "take photo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalActivity.this, "take photo", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -64,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(LoginActivity.this, "pick picture", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalActivity.this, "pick picture", Toast.LENGTH_SHORT).show();
             }
         });
 

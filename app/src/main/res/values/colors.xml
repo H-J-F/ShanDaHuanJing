@@ -9,6 +9,9 @@
     <color name="text_color">#f77d37</color>
     <color name="dialog_text_color">#7c7c7c</color>
     <color name="loginEditText_bgcolor">#53212121</color>
+    <color name="button_white">#efefef</color>
+    <color name="frame_color">#e7e7e7</color>
+    <color name="right_arrow_color">#b9b9b9</color>
 
     <color name="jiaquan">#f9e560</color>
     <color name="pm25">#acadad</color>
@@ -22,4 +25,5 @@
     <color name="blue">#26d0ff</color>
     <color name="green">#00d424</color>
     <color name="purple">#e063ff</color>
+    <color name="red">#fd4040</color>
 </resources>
