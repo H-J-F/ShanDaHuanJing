@@ -19,9 +19,24 @@ public class SetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setNoTitle();
+        setContentView(R.layout.setup_layout);
+
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent mainIntent = new Intent(SetupActivity.this, MainActivity.class);
+                SetupActivity.this.startActivity(mainIntent);
+                SetupActivity.this.finish();
+            }
+        }, SPLASH_DISPLAY_LENGHT);
+    }
+
+    private void setNoTitle(){
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -31,15 +46,5 @@ public class SetupActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
         }
-        setContentView(R.layout.setup_layout);
-
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent mainIntent = new Intent(SetupActivity.this, LoginActivity.class);
-                SetupActivity.this.startActivity(mainIntent);
-                SetupActivity.this.finish();
-            }
-        }, SPLASH_DISPLAY_LENGHT);
     }
 }

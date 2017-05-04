@@ -37,17 +37,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".DataShow" />
+        <activity
+            android:name=".DataShow"
+            android:theme="@style/DataShowTheme"/>
         <activity
             android:name=".PersonalActivity"
             android:theme="@style/MyTheme"/>

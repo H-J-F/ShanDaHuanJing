@@ -1,7 +1,10 @@
 package com.example.a11691.shandahuanjing;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,14 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,9 +26,12 @@ import android.widget.Toast;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener{
     DecimalFormat dcmfmt = new DecimalFormat("0.00");
@@ -40,19 +44,15 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     String co = new String();
     String so2 = new String();
     String no2 = new String();
-    private CardView card_jiaquan;
-    private CardView card_pm25;
-    private CardView card_shidu;
-    private CardView card_co;
-    private CardView card_so2;
-    private CardView card_no2;
     private SwipeRefreshLayout swipeRefresh;
     private DrawerLayout main_drawerlayout;
     private View view1, view2, view3, view4, view5, view6, view7, view8, view9, view_container;
     private List<View> viewList;
     private MyViewPager viewPager;
     private String dialog_items[] = {"CD座", "EF座", "至诚", "G座", "二三饭", "四饭", "弘毅", "知行", "思源"};
+    private String tables[] = {"dorm_CD", "dorm_EF", "dorm_ZHICHENG", "dorm_G", "CANTEEN23", "CANTEEN4", "dorm_HONGYI", "dorm_ZHIXING", "dorm_SIYUAN"};
     public boolean follow_flag = false;
+    private MyDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +65,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         View headerlayout = navView.inflateHeaderView(R.layout.nav_header);
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View layout = layoutInflater.inflate(R.layout.viewpager_layout, (ViewGroup) findViewById(R.id.viewpager_layout));
-        card_jiaquan = (CardView) layout.findViewById(R.id.card_jiaquan);
-        card_pm25 = (CardView) layout.findViewById(R.id.card_pm25);
-        card_shidu = (CardView) layout.findViewById(R.id.card_shidu);
-        card_co = (CardView) layout.findViewById(R.id.card_co);
-        card_so2 = (CardView) layout.findViewById(R.id.card_so2);
-        card_no2 = (CardView) layout.findViewById(R.id.card_no2);
+        TextView date_tv = (TextView) findViewById(R.id.date);
+        TextView updateTime_tv = (TextView) findViewById(R.id.updateTime);
+
+        dbHelper = new MyDatabaseHelper(this, "AllData.db", null, 1);
+        final SQLiteDatabase database = dbHelper.getWritableDatabase();
+        Cursor cursor = database.query("dorm_CD", null, null, null, null, null, null);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -123,101 +121,143 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOnPageChangeListener(this);
 
-        card_jiaquan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
+        if (cursor.getCount() == 0){
+            refreshData(0);
+        }else {
+            String date = new String();
+            String updateTime = new String();
+            for (int i = 0; i < viewList.size(); i++){
+                Cursor cusr  = database.query(tables[i], null, null, null, null, null, null);
+                cusr.moveToLast();
+
+                tem = cusr.getString(cusr.getColumnIndex("temperature"));
+                jiaquan = cusr.getString(cusr.getColumnIndex("jiaquan"));
+                pm25 = cusr.getString(cusr.getColumnIndex("pm25"));
+                shidu = cusr.getString(cusr.getColumnIndex("shidu"));
+                co = cusr.getString(cusr.getColumnIndex("Co"));
+                so2 = cusr.getString(cusr.getColumnIndex("So2"));
+                no2 = cusr.getString(cusr.getColumnIndex("No2"));
+                date = cusr.getString(cusr.getColumnIndex("date"));
+                updateTime = cusr.getString(cusr.getColumnIndex("updateTime"));
+
+                view_container = viewList.get(i);
+                TextView tem_tv = (TextView) view_container.findViewById(R.id.tem);
                 TextView jiaquan_tv = (TextView) view_container.findViewById(R.id.jiaquan_data);
-
-                Intent jiaquan_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "甲醛");
-                bundle.putString("value", jiaquan_tv.getText().toString());
-                jiaquan_intent.putExtras(bundle);
-                jiaquan_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(jiaquan_intent);
-            }
-        });
-
-        card_pm25.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
                 TextView pm25_tv = (TextView) view_container.findViewById(R.id.pm25_data);
-
-                Intent pm25_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "PM2.5");
-                bundle.putString("value", pm25_tv.getText().toString());
-                pm25_intent.putExtras(bundle);
-                pm25_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(pm25_intent);
-            }
-        });
-
-        card_shidu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
                 TextView shidu_tv = (TextView) view_container.findViewById(R.id.shidu_data);
-
-                Intent shidu_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "湿度");
-                bundle.putString("value", shidu_tv.getText().toString());
-                shidu_intent.putExtras(bundle);
-                shidu_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(shidu_intent);
-            }
-        });
-
-        card_co.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
                 TextView co_tv = (TextView) view_container.findViewById(R.id.co_data);
-
-                Intent co_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "CO");
-                bundle.putString("value", co_tv.getText().toString());
-                co_intent.putExtras(bundle);
-                co_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(co_intent);
-            }
-        });
-
-        card_so2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
                 TextView so2_tv = (TextView) view_container.findViewById(R.id.so2_data);
-
-                Intent so2_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "CO");
-                bundle.putString("value", so2_tv.getText().toString());
-                so2_intent.putExtras(bundle);
-                so2_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(so2_intent);
-            }
-        });
-
-        card_no2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view_container = viewList.get(viewPager.getCurrentItem());
                 TextView no2_tv = (TextView) view_container.findViewById(R.id.no2_data);
 
-                Intent no2_intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "CO");
-                bundle.putString("value", no2_tv.getText().toString());
-                no2_intent.putExtras(bundle);
-                no2_intent.setClass(MainActivity.this, DataShow.class);
-                startActivity(no2_intent);
+                tem_tv.setText(tem);
+                jiaquan_tv.setText(jiaquan);
+                pm25_tv.setText(pm25);
+                shidu_tv.setText(shidu);
+                co_tv.setText(co);
+                so2_tv.setText(so2);
+                no2_tv.setText(no2);
             }
-        });
+            date_tv.setText(date);
+            updateTime_tv.setText(updateTime);
+        }
+
+        for(int i = 0; i < 9; i++){
+            viewList.get(i).findViewById(R.id.card_jiaquan).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView jiaquan_tv = (TextView) view_container.findViewById(R.id.jiaquan_data);
+
+                    Intent jiaquan_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "甲醛");
+                    bundle.putString("value", jiaquan_tv.getText().toString());
+                    jiaquan_intent.putExtras(bundle);
+                    jiaquan_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(jiaquan_intent);
+                }
+            });
+
+            viewList.get(i).findViewById(R.id.card_pm25).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView pm25_tv = (TextView) view_container.findViewById(R.id.pm25_data);
+
+                    Intent pm25_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "PM2.5");
+                    bundle.putString("value", pm25_tv.getText().toString());
+                    pm25_intent.putExtras(bundle);
+                    pm25_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(pm25_intent);
+                }
+            });
+
+            viewList.get(i).findViewById(R.id.card_shidu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView shidu_tv = (TextView) view_container.findViewById(R.id.shidu_data);
+
+                    Intent shidu_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "湿度");
+                    bundle.putString("value", shidu_tv.getText().toString());
+                    shidu_intent.putExtras(bundle);
+                    shidu_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(shidu_intent);
+                }
+            });
+
+            viewList.get(i).findViewById(R.id.card_co).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView co_tv = (TextView) view_container.findViewById(R.id.co_data);
+
+                    Intent co_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "CO");
+                    bundle.putString("value", co_tv.getText().toString());
+                    co_intent.putExtras(bundle);
+                    co_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(co_intent);
+                }
+            });
+
+            viewList.get(i).findViewById(R.id.card_so2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView so2_tv = (TextView) view_container.findViewById(R.id.so2_data);
+
+                    Intent so2_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "CO");
+                    bundle.putString("value", so2_tv.getText().toString());
+                    so2_intent.putExtras(bundle);
+                    so2_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(so2_intent);
+                }
+            });
+
+            viewList.get(i).findViewById(R.id.card_no2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view_container = viewList.get(viewPager.getCurrentItem());
+                    TextView no2_tv = (TextView) view_container.findViewById(R.id.no2_data);
+
+                    Intent no2_intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", "CO");
+                    bundle.putString("value", no2_tv.getText().toString());
+                    no2_intent.putExtras(bundle);
+                    no2_intent.setClass(MainActivity.this, DataShow.class);
+                    startActivity(no2_intent);
+                }
+            });
+        }
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
@@ -236,56 +276,87 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             @Override
             public void onRefresh() {
                 viewPager.setScrollable(false);
-                refreshData();
+                refreshData(1300);
             }
         });
     }
 
-    private void refreshData() {
+    private void refreshData(final int sleepTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1300);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        view_container = viewList.get(viewPager.getCurrentItem());
-                        TextView tem_tv = (TextView) view_container.findViewById(R.id.tem);
-                        TextView jiaquan_tv = (TextView) view_container.findViewById(R.id.jiaquan_data);
-                        TextView pm25_tv = (TextView) view_container.findViewById(R.id.pm25_data);
-                        TextView shidu_tv = (TextView) view_container.findViewById(R.id.shidu_data);
-                        TextView co_tv = (TextView) view_container.findViewById(R.id.co_data);
-                        TextView so2_tv = (TextView) view_container.findViewById(R.id.so2_data);
-                        TextView no2_tv = (TextView) view_container.findViewById(R.id.no2_data);
+                        ContentValues values = new ContentValues();
 
-                        int ran_tem = ran.nextInt(37)%(37 - 10 + 1) + 10;
-                        float ran_jiaquan = ran.nextFloat();
-                        int ran_pm25 = ran.nextInt(71)%(71 - 10 + 1) + 10;
-                        int ran_shidu = ran.nextInt(101)%(101 - 30 + 1) + 10;
-                        int ran_co = ran.nextInt(31);
-                        float ran_so2 = ran.nextFloat() * 30;
-                        float ran_no2 = ran.nextFloat();
+                        TextView date_tv = (TextView) findViewById(R.id.date);
+                        TextView updateTime_tv = (TextView) findViewById(R.id.updateTime);
 
-                        tem = Integer.toString(ran_tem);
-                        jiaquan = dcmfmt.format(ran_jiaquan) + "mg/m³";
-                        pm25 = Integer.toString(ran_pm25) + "ug/m³";
-                        shidu = Integer.toString(ran_shidu) + "%RH";
-                        co = Integer.toString(ran_co) + "mg/m³";
-                        so2 = dcm_so2.format(ran_so2) + "mg/m³";
-                        no2 = dcmfmt.format(ran_no2) + "mg/m³";
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formatDate = format.format(new Date());
+                        StringTokenizer stringTokenizer = new StringTokenizer(formatDate, " ");
+                        String date = stringTokenizer.nextToken();
+                        String updateTime = stringTokenizer.nextToken();
 
-                        tem_tv.setText(tem);
-                        jiaquan_tv.setText(jiaquan);
-                        pm25_tv.setText(pm25);
-                        shidu_tv.setText(shidu);
-                        co_tv.setText(co);
-                        so2_tv.setText(so2);
-                        no2_tv.setText(no2);
+                        date_tv.setText(date);
+                        updateTime_tv.setText(updateTime);
 
+                        for (int i = 0; i < viewList.size(); i++){
+                            view_container = viewList.get(i);
+                            TextView tem_tv = (TextView) view_container.findViewById(R.id.tem);
+                            TextView jiaquan_tv = (TextView) view_container.findViewById(R.id.jiaquan_data);
+                            TextView pm25_tv = (TextView) view_container.findViewById(R.id.pm25_data);
+                            TextView shidu_tv = (TextView) view_container.findViewById(R.id.shidu_data);
+                            TextView co_tv = (TextView) view_container.findViewById(R.id.co_data);
+                            TextView so2_tv = (TextView) view_container.findViewById(R.id.so2_data);
+                            TextView no2_tv = (TextView) view_container.findViewById(R.id.no2_data);
+
+                            int ran_tem = ran.nextInt(37)%(37 - 10 + 1) + 10;
+                            float ran_jiaquan = ran.nextFloat();
+                            int ran_pm25 = ran.nextInt(71)%(71 - 10 + 1) + 10;
+                            int ran_shidu = ran.nextInt(101)%(101 - 30 + 1) + 10;
+                            int ran_co = ran.nextInt(31);
+                            float ran_so2 = ran.nextFloat() * 30;
+                            float ran_no2 = ran.nextFloat();
+
+                            tem = ran_tem + "";
+                            jiaquan = dcmfmt.format(ran_jiaquan) + "mg/m³";
+                            pm25 = ran_pm25 + "ug/m³";
+                            shidu = ran_shidu + "%RH";
+                            co = ran_co + "mg/m³";
+                            so2 = dcm_so2.format(ran_so2) + "mg/m³";
+                            no2 = dcmfmt.format(ran_no2) + "mg/m³";
+
+                            values.put("id", 1);
+                            values.put("temperature", tem);
+                            values.put("jiaquan", jiaquan);
+                            values.put("pm25", pm25);
+                            values.put("shidu", shidu);
+                            values.put("Co", co);
+                            values.put("So2", so2);
+                            values.put("No2", no2);
+                            values.put("date", date);
+                            values.put("updateTime", updateTime);
+
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+                            db.delete(tables[i], "id > ?", new String[] {"0"});
+                            db.insert(tables[i], null, values);
+                            values.clear();
+
+                            tem_tv.setText(tem);
+                            jiaquan_tv.setText(jiaquan);
+                            pm25_tv.setText(pm25);
+                            shidu_tv.setText(shidu);
+                            co_tv.setText(co);
+                            so2_tv.setText(so2);
+                            no2_tv.setText(no2);
+                        }
                         swipeRefresh.setRefreshing(false);
                         viewPager.setScrollable(true);
                     }
