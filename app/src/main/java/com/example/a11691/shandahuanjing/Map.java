@@ -44,10 +44,13 @@ public class Map extends AppCompatActivity {
     private LinearLayout rl_marker;
     private BitmapDescriptor bitmapDescriptor;
     private MyDatabaseHelper dbHelper;
+    private String place;
+    private ArrayList<String> place_items = new ArrayList<String>(){{add("CD座"); add("EF座"); add("至诚"); add("G座"); add("二三饭"); add("四饭"); add("弘毅"); add("知行"); add("思源");}};
     private String placeNames[] = {"CD座宿舍", "EF座宿舍", "至诚宿舍", "G座宿舍", "第二、三饭堂", "第四饭堂", "弘毅宿舍", "知行宿舍", "思源宿舍"};
     private double placeLatitude[] = {23.4225800000, 23.4226920000, 23.4178460000, 23.4186920000, 23.4212130000, 23.4179770000, 23.4170840000, 23.4171000000, 23.4169100000};
     private double placeLongitude[] = {116.6388310000, 116.6384900000, 116.6448230000, 116.6444140000, 116.6397800000, 116.6445100000, 116.6395820000, 116.6351918000, 116.6355750000};
     private String tables[] = {"dorm_CD", "dorm_EF", "dorm_ZHICHENG", "dorm_G", "CANTEEN23", "CANTEEN4", "dorm_HONGYI", "dorm_ZHIXING", "dorm_SIYUAN"};
+    private int place_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,24 @@ public class Map extends AppCompatActivity {
         rl_marker.setVisibility(View.GONE);
         final List map_values[] = getdata();
 
+        dbHelper = new MyDatabaseHelper(this, "AllData.db", null, 1);
+        final SQLiteDatabase database = dbHelper.getWritableDatabase();
+        Cursor personalCursor = database.query("MyInfo", null, null, null, null, null, null);
+
         LatLng laln = new LatLng(23.419623930393097, 116.6408161244201);
         MapStatus mMapStatus = new MapStatus.Builder().target(laln).zoom(17.8f).build();
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         baiduMap.setMapStatus(mMapStatusUpdate);
         setMarkerInfo();
+
+        personalCursor.moveToLast();
+        place = personalCursor.getString(personalCursor.getColumnIndex("followPlace"));
+        if (place.equals("")){
+            place_index = 0;
+        }
+        else {
+            place_index = place_items.indexOf(place);
+        }
 
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
@@ -116,7 +132,7 @@ public class Map extends AppCompatActivity {
 
                 //移动地标(marker)到屏幕中下方
                 LatLng laln = new LatLng(infoUtil.getLatitude() + 0.0025, infoUtil.getLongitude());
-                MapStatus mMapStatus = new MapStatus.Builder().target(laln).zoom(18.4f).build();
+                MapStatus mMapStatus = new MapStatus.Builder().target(laln).rotate(0).overlook(0).zoom(18.4f).build();
                 MapStatusUpdate msu = MapStatusUpdateFactory.newMapStatus(mMapStatus);
                 baiduMap.animateMapStatus(msu);
                 return true;
@@ -219,7 +235,8 @@ public class Map extends AppCompatActivity {
             marker.setExtraInfo(bundle);
         }
         //将地图显示在最后一个marker的位置
-        MapStatus mMapStatus = new MapStatus.Builder().target(latLng).zoom(18.4f).build();
+        latLng = new LatLng(infos.get(place_index).getLatitude(), infos.get(place_index).getLongitude());
+        MapStatus mMapStatus = new MapStatus.Builder().rotate(0).overlook(0).target(latLng).zoom(18.4f).build();
         MapStatusUpdate msu = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         baiduMap.animateMapStatus(msu);
     }

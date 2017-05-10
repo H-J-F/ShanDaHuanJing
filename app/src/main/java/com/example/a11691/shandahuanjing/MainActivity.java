@@ -37,22 +37,23 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     DecimalFormat dcmfmt = new DecimalFormat("0.00");
     DecimalFormat dcm_so2 = new DecimalFormat("0.0");
     Random ran = new Random();
-    String tem = new String();
-    String jiaquan = new String();
-    String pm25 = new String();
-    String shidu = new String();
-    String co = new String();
-    String so2 = new String();
-    String no2 = new String();
+    String tem;
+    String jiaquan;
+    String pm25;
+    String shidu;
+    String co;
+    String so2;
+    String no2;
     private SwipeRefreshLayout swipeRefresh;
     private DrawerLayout main_drawerlayout;
     private View view1, view2, view3, view4, view5, view6, view7, view8, view9, view_container;
     private List<View> viewList;
     private MyViewPager viewPager;
-    private String dialog_items[] = {"CD座", "EF座", "至诚", "G座", "二三饭", "四饭", "弘毅", "知行", "思源"};
+    private ArrayList<String> dialog_items = new ArrayList<String>(){{add("CD座"); add("EF座"); add("至诚"); add("G座"); add("二三饭"); add("四饭"); add("弘毅"); add("知行"); add("思源");}};
     private String tables[] = {"dorm_CD", "dorm_EF", "dorm_ZHICHENG", "dorm_G", "CANTEEN23", "CANTEEN4", "dorm_HONGYI", "dorm_ZHIXING", "dorm_SIYUAN"};
     public boolean follow_flag = false;
     private MyDatabaseHelper dbHelper;
+    private String place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         dbHelper = new MyDatabaseHelper(this, "AllData.db", null, 1);
         final SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query("dorm_CD", null, null, null, null, null, null);
+        Cursor personalCursor = database.query("MyInfo", null, null, null, null, null, null);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -159,6 +161,31 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             }
             date_tv.setText(date);
             updateTime_tv.setText(updateTime);
+        }
+
+        if (personalCursor.getCount() == 0){
+            viewPager.setCurrentItem(0, false);
+            ContentValues values = new ContentValues();
+            values.put("id", 1);
+            values.put("followPlace", "");
+            values.put("username", "");
+            values.put("myImg", "");
+            values.put("declaration", "");
+            values.put("mainBgImg", "");
+            values.put("headBgImg", "");
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            db.insert("MyInfo", null, values);
+            values.clear();
+        }else {
+            personalCursor.moveToLast();
+            place = personalCursor.getString(personalCursor.getColumnIndex("followPlace"));
+            if (!place.equals("")){
+                viewPager.setCurrentItem(dialog_items.indexOf(place), false);
+            }
+            else {
+                viewPager.setCurrentItem(0, false);
+            }
         }
 
         for(int i = 0; i < 9; i++){
@@ -398,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 public void onClick(View view) {
                     viewPager = (MyViewPager) findViewById(R.id.viewpager);
                     Button dialog_btn = (Button) findViewById(R.id.address_btn);
-                    dialog_btn.setText(dialog_items[index]);
+                    dialog_btn.setText(dialog_items.get(index));
                     dialog.dismiss();
                     viewPager.setCurrentItem(index, true);
 
@@ -426,12 +453,23 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             case R.id.follow:
                 if (follow_flag) {
                     follow_flag = false;
+                    place = "";
                     invalidateOptionsMenu();
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put("followPlace", "");
+                    db.update("MyInfo", values, "id = ?", new String[] {"1"});
                     Toast.makeText(this, "unfollow", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    Button btn = (Button) findViewById(R.id.address_btn);
+                    place = btn.getText().toString();
                     follow_flag = true;
                     invalidateOptionsMenu();
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put("followPlace", place);
+                    db.update("MyInfo", values, "id = ?", new String[] {"1"});
                     Toast.makeText(this, "follow", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -468,7 +506,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     public void onPageSelected(int arg0) {
         viewPager.setTag(viewPager.getCurrentItem());
         Button dialog_btn = (Button) findViewById(R.id.address_btn);
-        dialog_btn.setText(dialog_items[arg0]);
+        String tempPlace = dialog_items.get(arg0);
+        dialog_btn.setText(tempPlace);
+        follow_flag = tempPlace.equals(place);
+        invalidateOptionsMenu();
     }
 
     @Override
